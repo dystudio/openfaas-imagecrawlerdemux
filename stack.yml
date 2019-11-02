@@ -1,0 +1,9 @@
+version: 1.0
+provider:
+  name: openfaas
+functions:
+  openfaas-imagecrawlerdemux:
+    lang: go
+    handler: ./openfaas-imagecrawlerdemux
+    image: servernull/openfaas-imagecrawlerdemux:0.1.0
+
