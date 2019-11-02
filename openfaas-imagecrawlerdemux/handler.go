@@ -46,7 +46,7 @@ func Handle(req []byte) string {
 
 	// send result to exif feed asynchronously
 	exifReq, _ := http.NewRequest("POST", "http://gateway.openfaas:8080/async-function/openfaas-exiffeed", bytes.NewBuffer(req))
-	exifReq.Header.Set("X-Callback-Url", "http://gateway:8080/async-function/openfaas-elastic")
+	exifReq.Header.Set("X-Callback-Url", "http://gateway.openfaas:8080/async-function/openfaas-elastic")
 	exipResp, err := client.Do(exifReq)
 	if err != nil {
 		response := []struct {
@@ -63,7 +63,7 @@ func Handle(req []byte) string {
 
 	// send result to nsfw feed asynchronously
 	nsfwReq, _ := http.NewRequest("POST", "http://gateway.openfaas:8080/async-function/openfaas-opennsfwfeed", bytes.NewBuffer(req))
-	nsfwReq.Header.Set("X-Callback-Url", "http://gateway:8080/async-function/openfaas-elastic")
+	nsfwReq.Header.Set("X-Callback-Url", "http://gateway.openfaas:8080/async-function/openfaas-elastic")
 	nsfwResp, err := client.Do(nsfwReq)
 	if err != nil {
 		response := []struct {
