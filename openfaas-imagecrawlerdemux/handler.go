@@ -78,6 +78,23 @@ func Handle(req []byte) string {
 	}
 	defer nsfwResp.Body.Close()
 
+	// send result to inception feed asynchronously
+	inceptionReq, _ := http.NewRequest("POST", "http://gateway.openfaas:8080/async-function/openfaas-inceptionfeed", bytes.NewBuffer(body))
+	inceptionReq.Header.Set("X-Callback-Url", "http://gateway:8080/function/openfaas-elastic")
+	inceptionResp, err := client.Do(inceptionReq)
+	if err != nil {
+		response := []struct {
+			Error   string
+			Message string
+		}{{
+			"error sending to NSFW feed",
+			err.Error(),
+		}}
+		output, _ := json.Marshal(response)
+		return string(output)
+	}
+	defer inceptionResp.Body.Close()
+
 	return string(body)
 
 }
